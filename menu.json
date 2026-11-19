@@ -1,0 +1,140 @@
+{
+  "name": "Spark Web Player",
+  "version": "1.0.0",
+  "headline": "Spark TV",
+  "logo": "https://spk.clientesigctv.workers.dev/assets/logo.png",
+  "background": "https://spk.clientesigctv.workers.dev/assets/background.jpg",
+  "cache": false,
+  "action": "link:https://web.spmain.xyz/",
+  "ready": {
+    "action": "link:https://web.spmain.xyz/"
+  },
+  "menu": [
+    {
+      "id": "home",
+      "icon": "tv",
+      "label": "Início",
+      "focus": true,
+      "execute": true,
+      "data": {
+        "action": "link:https://web.spmain.xyz/",
+        "ready": {
+          "action": "link:https://web.spmain.xyz/"
+        },
+        "pages": [
+          {
+            "items": [
+              {
+                "type": "default",
+                "layout": "0,0,8,6",
+                "color": "msx-black-soft",
+                "icon": "msx-red:play-arrow",
+                "title": "Spark Web Player",
+                "headline": "Player Oficial",
+                "text": "Abrindo o player em tela cheia...",
+                "image": "https://spk.clientesigctv.workers.dev/assets/banner.png",
+                "imageFiller": "cover",
+                "action": "link:https://web.spmain.xyz/",
+                "focus": true,
+                "execute": true
+              },
+              {
+                "type": "default",
+                "layout": "8,0,4,3",
+                "color": "msx-glass",
+                "icon": "msx-blue:refresh",
+                "title": "Recarregar",
+                "headline": "Atualizar Player",
+                "text": "Reabrir o player web",
+                "action": "link:https://web.spmain.xyz/"
+              },
+              {
+                "type": "default",
+                "layout": "8,3,4,3",
+                "color": "msx-glass",
+                "icon": "msx-white:settings",
+                "title": "Ajustes",
+                "headline": "Configurações MSX",
+                "text": "Ajustar opções do MSX",
+                "action": "settings"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "play",
+      "icon": "play-circle-filled",
+      "label": "Abrir Player",
+      "data": {
+        "pages": [
+          {
+            "items": [
+              {
+                "type": "default",
+                "layout": "2,1,8,4",
+                "color": "msx-black-soft",
+                "icon": "msx-red:play-arrow",
+                "title": "Abrindo Spark Player...",
+                "action": "link:https://web.spmain.xyz/",
+                "execute": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "help",
+      "icon": "help-outline",
+      "label": "Ajuda & Dicas",
+      "data": {
+        "pages": [
+          {
+            "items": [
+              {
+                "type": "default",
+                "layout": "0,0,6,3",
+                "color": "msx-glass",
+                "icon": "msx-white:tv",
+                "title": "Controle Remoto",
+                "headline": "Como navegar",
+                "text": "Use as setas direcionais e Enter/OK para navegar no player web. Pressione Voltar (Return) para sair."
+              },
+              {
+                "type": "default",
+                "layout": "6,0,6,3",
+                "color": "msx-glass",
+                "icon": "msx-yellow:warning",
+                "title": "Desative 'Validate Links'",
+                "headline": "Abertura direta",
+                "text": "Vá em Configurações > Validate Links e coloque OFF para não pedir confirmação ao abrir o player.",
+                "action": "settings"
+              },
+              {
+                "type": "default",
+                "layout": "0,3,6,3",
+                "color": "msx-glass",
+                "icon": "msx-blue:replay",
+                "title": "Sair do Player",
+                "headline": "Botão Voltar",
+                "text": "Ao assistir, use o botão Voltar ou Return do controle para retornar a este menu do MSX."
+              },
+              {
+                "type": "default",
+                "layout": "6,3,6,3",
+                "color": "msx-glass",
+                "icon": "msx-red:refresh",
+                "title": "Reiniciar",
+                "headline": "Recarregar Portal",
+                "action": "reload"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+

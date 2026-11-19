@@ -1,0 +1,6 @@
+{
+  "name": "Spark Web Player",
+  "version": "1.0.0",
+  "parameter": "content:https://clientesigc.github.io/msx/content.json",
+  "welcome": "none"
+}
