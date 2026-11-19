@@ -13,7 +13,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="-1">
 
-  <!-- Configurações PWA para Tela Cheia e Orientação Horizontal em Dispositivos Móveis -->
+  <!-- Configurações PWA para Tela Cheia e Orientação Horizontal -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -32,10 +32,10 @@
   <link rel="stylesheet" crossorigin href="./assets/index-DLruz_77.css">
 
   <style>
-    /* Forçar fundo preto total e eliminar barras de rolagem */
+    /* Forçar preenchimento perfeito de 100% da tela sem barras */
     html, body {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       margin: 0;
       padding: 0;
       background-color: #000;
@@ -49,6 +49,70 @@
       height: 100vh;
       background-color: #000;
     }
+
+    /* Overlay elegante caso o celular esteja na vertical */
+    #orientation-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #1a1a24 0%, #0a0a0f 100%);
+      z-index: 999999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Poppins', system-ui, sans-serif;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .rotate-phone-icon {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 25px;
+      animation: rotate-anim 2s infinite ease-in-out;
+    }
+
+    @keyframes rotate-anim {
+      0%, 10% { transform: rotate(0deg); }
+      50%, 60% { transform: rotate(-90deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .rotate-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .rotate-subtitle {
+      font-size: 16px;
+      color: #a0a0b0;
+      margin-bottom: 25px;
+      max-width: 320px;
+      line-height: 1.5;
+    }
+
+    .rotate-btn {
+      background: linear-gradient(135deg, #FF4B1F 0%, #FF1361 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 30px;
+      box-shadow: 0 4px 20px rgba(255, 75, 31, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
   </style>
 
   <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
@@ -58,90 +122,72 @@
 <body>
   <div id="root"></div>
 
+  <!-- Tela de orientação para celulares em pé -->
+  <div id="orientation-overlay" onclick="triggerLandscapeFullscreen()">
+    <svg class="rotate-phone-icon" viewBox="0 0 24 24" fill="none" stroke="#FF4B1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+      <line x1="12" y1="18" x2="12.01" y2="18"></line>
+    </svg>
+    <div class="rotate-title">Vire seu aparelho</div>
+    <div class="rotate-subtitle">Para a melhor experiência, use seu celular na horizontal ou toque abaixo.</div>
+    <button class="rotate-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+      </svg>
+      Abrir em Tela Cheia
+    </button>
+  </div>
+
   <script>
-    (function () {
-      function adjustOrientation() {
-        var root = document.getElementById('root');
-        if (!root) return;
-
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        var isPortrait = h > w;
-
-        if (isPortrait) {
-          // Celular na vertical (mesmo com bloqueio de rotação do sistema ativo):
-          // Força rotação de 90 graus e expande para preencher 100% da tela na horizontal
-          root.style.position = 'fixed';
-          root.style.width = h + 'px';
-          root.style.height = w + 'px';
-          root.style.top = '0px';
-          root.style.left = w + 'px';
-          root.style.transformOrigin = '0 0';
-          root.style.transform = 'rotate(90deg)';
-          root.style.overflow = 'hidden';
-        } else {
-          // Dispositivo na horizontal (TV ou celular virado de lado):
-          // Mantém proporção nativa perfeita de 16:9 em tela cheia
-          root.style.position = 'relative';
-          root.style.width = '100vw';
-          root.style.height = '100vh';
-          root.style.top = '0px';
-          root.style.left = '0px';
-          root.style.transform = 'none';
-          root.style.overflow = 'hidden';
+    function triggerLandscapeFullscreen() {
+      try {
+        var docEl = document.documentElement;
+        var req = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+        if (req && !document.fullscreenElement && !document.webkitFullscreenElement) {
+          var p = req.call(docEl);
+          if (p && p.catch) p.catch(function () { });
         }
+      } catch (e) { }
+
+      try {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(function () { });
+        }
+      } catch (e) { }
+    }
+
+    function checkOrientation() {
+      var overlay = document.getElementById('orientation-overlay');
+      if (!overlay) return;
+
+      var isPortrait = window.innerHeight > window.innerWidth;
+      if (isPortrait) {
+        overlay.style.display = 'flex';
+      } else {
+        overlay.style.display = 'none';
       }
+    }
 
-      function enterFullscreenAndLandscape() {
-        try {
-          var docEl = document.documentElement;
-          var req = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
-          if (req && !document.fullscreenElement && !document.webkitFullscreenElement) {
-            var p = req.call(docEl);
-            if (p && p.catch) p.catch(function () { });
-          }
-        } catch (e) { }
+    window.addEventListener('load', function () {
+      checkOrientation();
+      try {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(function () { });
+        }
+      } catch (e) { }
+    });
 
-        try {
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(function () { });
-          }
-        } catch (e) { }
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', function () {
+      setTimeout(checkOrientation, 200);
+    });
+
+    // Ao tocar na tela em qualquer momento, garante tela cheia se já estiver na horizontal
+    document.addEventListener('click', function () {
+      if (window.innerWidth > window.innerHeight) {
+        triggerLandscapeFullscreen();
       }
-
-      // Executa no carregamento e ao mudar orientação ou tamanho da tela
-      window.addEventListener('load', function () {
-        adjustOrientation();
-        try {
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(function () { });
-          }
-        } catch (e) { }
-      });
-      window.addEventListener('resize', adjustOrientation);
-      window.addEventListener('orientationchange', adjustOrientation);
-
-      // Verificação contínua nos primeiros segundos enquanto o React monta os componentes
-      var timerCount = 0;
-      var timer = setInterval(function () {
-        adjustOrientation();
-        timerCount++;
-        if (timerCount > 20) clearInterval(timer);
-      }, 250);
-
-      // No primeiro toque ou clique na tela, entra em tela cheia total
-      var events = ['click', 'touchstart', 'pointerdown'];
-      function onFirstInteraction() {
-        enterFullscreenAndLandscape();
-        adjustOrientation();
-        events.forEach(function (evt) {
-          document.removeEventListener(evt, onFirstInteraction, true);
-        });
-      }
-      events.forEach(function (evt) {
-        document.addEventListener(evt, onFirstInteraction, true);
-      });
-    })();
+    }, { passive: true });
   </script>
 
   <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
