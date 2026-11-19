@@ -2,7 +2,7 @@
   "name": "Spark Web Player",
   "short_name": "Spark",
   "start_url": "./",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "landscape",
   "background_color": "#000000",
   "theme_color": "#000000",

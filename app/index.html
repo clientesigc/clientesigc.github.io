@@ -13,26 +13,25 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="-1">
 
-  <!-- Configurações PWA para Tela Cheia e Orientação Horizontal -->
+  <!-- Suporte a PWA / Instalação como App de Navegador -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="screen-orientation" content="landscape" />
-  <meta name="x5-orientation" content="landscape" />
-  <meta name="x5-page-mode" content="app" />
+  <meta name="apple-mobile-web-app-title" content="Spark Player" />
   <link rel="manifest" href="./manifest.json" />
 
   <link rel="icon" type="image/svg+xml" href="./assets/logo-a3EQaSm4.ico" />
+  <!-- <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script> -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" />
-  <meta id="app-viewport" name="viewport" content="width=1920, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=1920, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>IGC M Spark P2P</title>
   <script type="module" crossorigin src="./assets/index-DxbQVtdE.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/react-0DS0BYP9.js">
   <link rel="stylesheet" crossorigin href="./assets/index-DLruz_77.css">
 
   <style>
-    /* Estilos globais e eliminação de barras */
+    /* Fundo preto e eliminação de rolagem */
     html, body {
       width: 100vw;
       height: 100vh;
@@ -45,7 +44,82 @@
     }
 
     #root {
-      background-color: #000;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Aviso elegante para celulares na vertical */
+    #rotate-screen-notice {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #181924 0%, #08090d 100%);
+      z-index: 9999999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .rotate-icon-wrapper {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 75, 31, 0.12);
+      border: 1px solid rgba(255, 75, 31, 0.3);
+    }
+
+    .rotate-phone-svg {
+      width: 44px;
+      height: 44px;
+      animation: phone-rotate-anim 2.2s infinite ease-in-out;
+    }
+
+    @keyframes phone-rotate-anim {
+      0%, 15% { transform: rotate(0deg); }
+      55%, 75% { transform: rotate(-90deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .rotate-notice-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .rotate-notice-desc {
+      font-size: 15px;
+      color: #9ea3b5;
+      max-width: 320px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .rotate-notice-tip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #d1d5e5;
+      max-width: 320px;
+      line-height: 1.4;
     }
   </style>
 
@@ -56,101 +130,43 @@
 <body>
   <div id="root"></div>
 
+  <!-- Tela de orientação para celulares em pé -->
+  <div id="rotate-screen-notice">
+    <div class="rotate-icon-wrapper">
+      <svg class="rotate-phone-svg" viewBox="0 0 24 24" fill="none" stroke="#FF4B1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+      </svg>
+    </div>
+    <div class="rotate-notice-title">Gire seu aparelho</div>
+    <div class="rotate-notice-desc">
+      Ative a <strong>Rotação Automática</strong> do seu celular e use o aparelho na horizontal para a melhor experiência.
+    </div>
+    <div class="rotate-notice-tip">
+      💡 No navegador: adicione à tela inicial para abrir como aplicativo sem barras!
+    </div>
+  </div>
+
   <script>
     (function () {
-      var BASE_W = 1920;
-      var BASE_H = 1080;
+      function checkOrientation() {
+        var notice = document.getElementById('rotate-screen-notice');
+        if (!notice) return;
 
-      function updateLayout() {
-        var root = document.getElementById('root');
-        var vp = document.getElementById('app-viewport');
-        if (!root) return;
-
-        var screenW = window.innerWidth;
-        var screenH = window.innerHeight;
-        var isPortrait = screenH > screenW;
-
+        // Se altura for maior que a largura, celular está na vertical
+        var isPortrait = window.innerHeight > window.innerWidth;
         if (isPortrait) {
-          // Celular na vertical (mesmo com trava de rotação do sistema ativada):
-          // Ajusta a viewport para device-width para renderizar na escala exata
-          if (vp && vp.content.indexOf('1920') !== -1) {
-            vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-            // Recalcula dimensões após atualizar viewport
-            screenW = window.innerWidth;
-            screenH = window.innerHeight;
-          }
-
-          // Calcula escala perfeita de 16:9 mantendo proporção idêntica da primeira tela
-          var scale = Math.min(screenH / BASE_W, screenW / BASE_H);
-
-          root.style.position = 'fixed';
-          root.style.width = BASE_W + 'px';
-          root.style.height = BASE_H + 'px';
-          root.style.left = '50%';
-          root.style.top = '50%';
-          root.style.transformOrigin = 'center center';
-          root.style.transform = 'translate(-50%, -50%) rotate(90deg) scale(' + scale + ')';
-          root.style.overflow = 'hidden';
+          notice.style.display = 'flex';
         } else {
-          // TV, computador ou celular deitado (landscape):
-          if (vp && vp.content.indexOf('device-width') !== -1) {
-            vp.setAttribute('content', 'width=1920, maximum-scale=1, user-scalable=no, viewport-fit=cover');
-          }
-
-          root.style.position = 'relative';
-          root.style.width = '100vw';
-          root.style.height = '100vh';
-          root.style.left = '0px';
-          root.style.top = '0px';
-          root.style.transform = 'none';
-          root.style.overflow = 'hidden';
+          notice.style.display = 'none';
         }
       }
 
-      function enterFullscreen() {
-        try {
-          var docEl = document.documentElement;
-          var req = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
-          if (req && !document.fullscreenElement && !document.webkitFullscreenElement) {
-            var p = req.call(docEl);
-            if (p && p.catch) p.catch(function () { });
-          }
-        } catch (e) { }
-
-        try {
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(function () { });
-          }
-        } catch (e) { }
-      }
-
-      // Executa imediatamente e no carregamento
-      updateLayout();
-      window.addEventListener('load', updateLayout);
-      window.addEventListener('resize', updateLayout);
+      checkOrientation();
+      window.addEventListener('load', checkOrientation);
+      window.addEventListener('resize', checkOrientation);
       window.addEventListener('orientationchange', function () {
-        setTimeout(updateLayout, 150);
-      });
-
-      // Verificação durante os primeiros 3 segundos para garantir sincronia com a montagem do React
-      var count = 0;
-      var interval = setInterval(function () {
-        updateLayout();
-        count++;
-        if (count > 15) clearInterval(interval);
-      }, 200);
-
-      // Ao primeiro toque na tela, tenta solicitar tela cheia automática
-      var events = ['click', 'touchstart', 'pointerdown'];
-      function onFirstTouch() {
-        enterFullscreen();
-        updateLayout();
-        events.forEach(function (e) {
-          document.removeEventListener(e, onFirstTouch, true);
-        });
-      }
-      events.forEach(function (e) {
-        document.addEventListener(e, onFirstTouch, true);
+        setTimeout(checkOrientation, 150);
       });
     })();
   </script>
