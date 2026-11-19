@@ -181,6 +181,63 @@
         setTimeout(checkOrientation, 150);
       });
     })();
+
+    // Suporte a Tela Cheia Real no PC (remove as abas do Chrome e a barra de tarefas do Windows)
+    (function () {
+      function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(function () {});
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(function () {});
+          }
+        }
+      }
+
+      // 1. Atalho de duplo clique com o mouse em qualquer parte do vídeo/tela no PC
+      document.addEventListener('dblclick', function (e) {
+        // Ignora clique duplo se for em campos de texto/input
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        toggleFullScreen();
+      });
+
+      // 2. Atalho da tecla 'F' (padrão YouTube/Netflix) para entrar/sair de tela cheia
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'f' || e.key === 'F') && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+          e.preventDefault();
+          toggleFullScreen();
+        }
+      });
+
+      // 3. Sincronização automática quando o player expande o vídeo
+      var fsObserver = new MutationObserver(function () {
+        var isPlayerFs = !!document.querySelector('.de-fs-inapp');
+        if (isPlayerFs && !document.fullscreenElement) {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(function () {});
+          }
+        } else if (!isPlayerFs && document.fullscreenElement) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(function () {});
+          }
+        }
+      });
+
+      function initObserver() {
+        var root = document.getElementById('root');
+        if (root) {
+          fsObserver.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', initObserver);
+      } else {
+        initObserver();
+      }
+    })();
   </script>
 
   <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
