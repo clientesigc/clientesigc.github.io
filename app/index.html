@@ -153,9 +153,21 @@
         var notice = document.getElementById('rotate-screen-notice');
         if (!notice) return;
 
-        // Se altura for maior que a largura, celular está na vertical
+        // Proteção total para PC / Desktop (Windows, Mac, Linux):
+        // NUNCA exibe o aviso de rotação em computadores, mesmo se a janela for redimensionada ou minimizada
+        var isDesktop = /Windows NT|Macintosh|X11|CrOS/i.test(navigator.userAgent) && 
+                        !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+        if (isDesktop) {
+          notice.style.display = 'none';
+          return;
+        }
+
+        // Dispositivos móveis reais (smartphones e tablets)
+        var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
         var isPortrait = window.innerHeight > window.innerWidth;
-        if (isPortrait) {
+
+        if (isMobile && isPortrait) {
           notice.style.display = 'flex';
         } else {
           notice.style.display = 'none';
