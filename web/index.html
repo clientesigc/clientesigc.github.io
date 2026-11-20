@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <script type="module" crossorigin src="./assets/polyfills-xDhK6ktE.js"></script>
+
+  <meta name="robots" content="noindex">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="-1">
+
+  <!-- PWA & Mobile Web App -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="IGC Media">
+  <link rel="manifest" href="./manifest.json">
+
+  <link rel="icon" type="image/png" href="./assets/logo-B2i-VKI5.png">
+  <link rel="stylesheet" href="./assets/css2">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>IGC Media</title>
+
+  <script type="module" crossorigin src="./assets/index-BttpYQxc.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/react-D4mM2oMw.js">
+  <link rel="modulepreload" crossorigin href="./assets/hls-BB0S4iYm.js">
+  <link rel="modulepreload" crossorigin href="./assets/mpegts-Wzu230E-.js">
+  <link rel="modulepreload" crossorigin href="./assets/index-CNCiVN_3.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-wW7N-Jud.css">
+
+  <script type="module">
+    import.meta.url;import("_").catch(()=>1);(async function*(){})().next();
+    if(location.protocol!="file:"){window.__vite_is_modern_browser=true}
+  </script>
+  <script type="module">
+    !function(){
+      if(window.__vite_is_modern_browser)return;
+      console.warn("vite: loading legacy chunks");
+      var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");
+      n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)
+    }();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <!-- Suporte a Tela Cheia Real no PC (duplo clique e tecla F) -->
+  <script>
+    (function () {
+      function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(function () {});
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(function () {});
+          }
+        }
+      }
+
+      document.addEventListener('dblclick', function (e) {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        toggleFullScreen();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'f' || e.key === 'F') && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+          e.preventDefault();
+          toggleFullScreen();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
+
